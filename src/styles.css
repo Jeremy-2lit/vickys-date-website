@@ -202,44 +202,6 @@ h1 span {
   backdrop-filter: blur(14px);
 }
 
-.surprise-screen {
-  position: fixed;
-  z-index: 1;
-  inset: 0;
-  display: grid;
-  place-items: center;
-  overflow: hidden;
-  padding: 24px;
-  background: linear-gradient(135deg, #2b071b, #8c2454, #d65b89);
-  text-align: center;
-}
-
-.surprise-content {
-  width: min(100%, 700px);
-  padding: 30px;
-}
-
-.surprise-content h1 {
-  margin: 25px 0;
-  font-size: clamp(48px, 12vw, 65px);
-}
-
-.surprise-content p {
-  color: #ffe1eb;
-  font-size: 17px;
-  line-height: 1.8;
-}
-
-.big-heart {
-  font-size: 90px;
-  line-height: 1;
-}
-
-.surprise-footer {
-  margin-top: 35px;
-  font-size: 13px !important;
-}
-
 .heart-zoom {
   position: fixed;
   z-index: 10;

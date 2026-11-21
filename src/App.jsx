@@ -16,7 +16,6 @@ const ESCAPE_DISTANCE = 150;
 const RUN_TIME = 10;
 
 function App() {
-  const [screen, setScreen] = useState("proposal");
   const [isYes, setIsYes] = useState(false);
   const [timerStarted, setTimerStarted] = useState(false);
   const [timeLeft, setTimeLeft] = useState(RUN_TIME);
@@ -115,23 +114,36 @@ function App() {
       return;
     }
 
+    if (isTransitioning) return;
+
+    if (shouldReduceMotion) {
+      window.location.assign(new URL("./yes.html", window.location.href).href);
+      return;
+    }
+
+    const buttonRect = buttonRef.current?.getBoundingClientRect();
+    if (!buttonRect) return;
+
+    const originX =
+      event.detail === 0 ? buttonRect.left + buttonRect.width / 2 : event.clientX;
+    const originY =
+      event.detail === 0 ? buttonRect.top + buttonRect.height / 2 : event.clientY;
     const farthestCorner = Math.max(
-      Math.hypot(event.clientX, event.clientY),
-      Math.hypot(window.innerWidth - event.clientX, event.clientY),
-      Math.hypot(event.clientX, window.innerHeight - event.clientY),
+      Math.hypot(originX, originY),
+      Math.hypot(window.innerWidth - originX, originY),
+      Math.hypot(originX, window.innerHeight - originY),
       Math.hypot(
-        window.innerWidth - event.clientX,
-        window.innerHeight - event.clientY,
+        window.innerWidth - originX,
+        window.innerHeight - originY,
       ),
     );
-    setZoomOrigin({ x: event.clientX, y: event.clientY });
+    setZoomOrigin({ x: originX, y: originY });
     setZoomScale(Math.ceil((farthestCorner * 2) / 50));
     setIsTransitioning(true);
   }
 
   function finishTransition() {
-    setScreen("surprise");
-    setIsTransitioning(false);
+    window.location.assign(new URL("./yes.html", window.location.href).href);
   }
 
   return (
@@ -164,15 +176,11 @@ function App() {
           ))}
         </m.div>
 
-        <AnimatePresence mode="wait" initial={false}>
-          {screen === "proposal" ? (
-            <m.main
-              key="proposal"
+        <m.main
               ref={cardRef}
               className="proposal-container"
               initial={{ opacity: 0, y: 28, scale: 0.96 }}
               animate={{ opacity: 1, y: 0, scale: 1 }}
-              exit={{ opacity: 0, y: -16, scale: 0.94 }}
               transition={{ duration: 0.55, ease: [0.22, 1, 0.36, 1] }}
             >
               <m.div
@@ -203,6 +211,7 @@ function App() {
                   ref={buttonRef}
                   id="yesButton"
                   type="button"
+                  disabled={isTransitioning}
                   className={isYes ? "yes-button" : ""}
                   initial={false}
                   animate={{
@@ -246,46 +255,10 @@ function App() {
                   </m.p>
                 )}
               </AnimatePresence>
-            </m.main>
-          ) : (
-            <m.section
-              key="surprise"
-              className="surprise-screen"
-              aria-labelledby="surprise-title"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              transition={{ duration: 0.5 }}
-            >
-              <m.div
-                className="surprise-content"
-                initial={{ opacity: 0, y: 25, scale: 0.92 }}
-                animate={{ opacity: 1, y: 0, scale: 1 }}
-                transition={{ delay: 0.12, duration: 0.65, ease: [0.22, 1, 0.36, 1] }}
-              >
-                <m.div
-                  className="big-heart"
-                  aria-hidden="true"
-                  animate={shouldReduceMotion ? undefined : { scale: [1, 1.12, 1] }}
-                  transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut" }}
-                >
-                  ❤️
-                </m.div>
-
-                <h1 id="surprise-title">YES! ❤️</h1>
-
-                <p id="personalMessage">YOUR SPECIAL MESSAGE WILL GO HERE.</p>
-
-                <p className="surprise-footer">
-                  Something beautiful is waiting for you.
-                </p>
-              </m.div>
-            </m.section>
-          )}
-        </AnimatePresence>
+        </m.main>
 
         <AnimatePresence>
-          {isYes && screen === "proposal" && (
+          {isYes && (
             <m.div
               key="tease-popup"
               className="tease-popup"
