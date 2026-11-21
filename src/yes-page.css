@@ -10,6 +10,12 @@
   scroll-behavior: smooth;
 }
 
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
 html,
 body,
 #root {
@@ -202,55 +208,95 @@ a {
   position: relative;
   display: grid;
   width: min(100%, 410px);
-  aspect-ratio: 1;
+  aspect-ratio: 1.08;
   place-items: center;
   justify-self: center;
+  perspective: 1000px;
 }
 
-.hero-orbit {
+.hero-photo-card {
   position: absolute;
-  border: 1px solid rgb(255 223 236 / 15%);
-  border-radius: 50%;
-  will-change: transform;
+  width: min(84%, 350px);
+  aspect-ratio: 4 / 3;
+  overflow: hidden;
+  border: 1px solid rgb(255 240 247 / 72%);
+  border-radius: 15px;
+  background: #fff3f7;
+  box-shadow: 0 22px 65px rgb(19 5 17 / 42%);
 }
 
-.hero-orbit--outer {
-  inset: 5%;
+.hero-photo-card img {
+  position: absolute;
+  inset: 9px 9px 35px;
+  display: block;
+  width: calc(100% - 18px);
+  height: calc(100% - 44px);
+  background: #241a24;
+  object-fit: contain;
 }
 
-.hero-orbit--inner {
-  inset: 15%;
-  border-style: dashed;
-  border-color: rgb(255 223 236 / 21%);
-}
-
-.hero-heart {
-  display: grid;
-  width: 52%;
-  aspect-ratio: 1;
-  place-items: center;
-  border: 1px solid rgb(255 239 247 / 35%);
-  border-radius: 50%;
+.hero-photo-card__interlude {
+  position: absolute;
+  z-index: 1;
+  inset: 9px 9px 35px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
   background:
-    radial-gradient(circle at 35% 25%, rgb(255 255 255 / 25%), transparent 42%),
-    linear-gradient(145deg, rgb(248 149 192 / 34%), rgb(176 81 153 / 27%) 54%, rgb(112 75 147 / 36%));
-  box-shadow:
-    0 20px 70px rgb(243 100 163 / 23%),
-    inset 0 1px 18px rgb(255 255 255 / 18%);
-  -webkit-backdrop-filter: blur(12px);
-  backdrop-filter: blur(12px);
-  will-change: transform;
+    radial-gradient(circle at 50% 35%, rgb(255 180 213 / 20%), transparent 58%),
+    #241a24;
+  color: #ffe5ef;
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: clamp(20px, 3vw, 29px);
+  font-style: italic;
+  text-shadow: 0 2px 18px rgb(255 121 177 / 45%);
 }
 
-.hero-heart span {
-  font-size: clamp(58px, 10vw, 104px);
-  filter: drop-shadow(0 10px 24px rgb(67 12 48 / 38%));
+.hero-photo-card__interlude span:last-child {
+  color: #ff9fc4;
+  font-family: sans-serif;
+  font-size: 0.72em;
+  font-style: normal;
 }
 
-.hero-orbit-dot {
+.hero-photo-card--back-two {
+  z-index: 0;
+  opacity: 0.48;
+  transform: translate(17px, 2px) rotate(8deg) scale(0.9);
+}
+
+.hero-photo-card--back-one {
+  z-index: 1;
+  opacity: 0.72;
+  transform: translate(9px, 1px) rotate(4deg) scale(0.95);
+}
+
+.hero-photo-card--front {
+  z-index: 2;
+  will-change: transform, opacity;
+}
+
+.hero-photo-card__badge {
   position: absolute;
+  right: 12px;
+  bottom: 9px;
+  left: 12px;
+  overflow: hidden;
+  color: #6b4058;
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 12px;
+  font-style: italic;
+  text-align: center;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.hero-photo-stack__sparkle {
+  position: absolute;
+  z-index: 3;
   display: grid;
-  width: 37px;
+  width: 36px;
   aspect-ratio: 1;
   place-items: center;
   border: 1px solid rgb(255 234 243 / 22%);
@@ -261,19 +307,14 @@ a {
   font-size: 16px;
 }
 
-.hero-orbit-dot--one {
-  top: 9%;
-  right: 24%;
+.hero-photo-stack__sparkle--one {
+  top: 8%;
+  right: 12%;
 }
 
-.hero-orbit-dot--two {
-  bottom: 21%;
-  left: 3%;
-}
-
-.hero-orbit-dot--three {
-  right: 7%;
-  bottom: 28%;
+.hero-photo-stack__sparkle--two {
+  bottom: 8%;
+  left: 8%;
   color: #ffd39e;
 }
 
@@ -311,6 +352,47 @@ a {
   line-height: 1.8;
 }
 
+.moment-filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: -5px 0 22px;
+}
+
+.moment-filter {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  padding: 9px 13px;
+  border: 1px solid rgb(255 235 244 / 13%);
+  border-radius: 999px;
+  background: rgb(255 255 255 / 4%);
+  color: #dec8d9;
+  cursor: pointer;
+  font-size: 11px;
+  transition:
+    border-color 180ms ease,
+    background 180ms ease,
+    color 180ms ease;
+}
+
+.moment-filter:hover,
+.moment-filter.is-active {
+  border-color: rgb(255 171 204 / 43%);
+  background: rgb(255 167 202 / 13%);
+  color: #fff3f8;
+}
+
+.moment-filter span {
+  color: #f2a5c5;
+  font-size: 10px;
+}
+
+.moment-filter:focus-visible {
+  outline: 2px solid #ffc0d8;
+  outline-offset: 3px;
+}
+
 .moment-grid {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
@@ -345,7 +427,8 @@ a {
 .moment-card:focus-visible,
 .moment-dialog__close:focus-visible,
 .back-link:focus-visible,
-.hero-scroll-link:focus-visible {
+.hero-scroll-link:focus-visible,
+.moment-filter:focus-visible {
   outline: 2px solid #ffc0d8;
   outline-offset: 4px;
 }
@@ -355,7 +438,7 @@ a {
   display: grid;
   overflow: hidden;
   width: 100%;
-  aspect-ratio: 1.16;
+  aspect-ratio: 4 / 3;
   place-items: center;
   border-radius: 11px;
   background:
@@ -404,34 +487,12 @@ a {
   position: absolute;
   z-index: 0;
   inset: 0;
+  display: block;
   width: 100%;
   height: 100%;
-  object-fit: cover;
-}
-
-.moment-card__placeholder {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 12px;
-  color: rgb(255 241 247 / 80%);
-  font-size: 8px;
-  font-weight: 600;
-  letter-spacing: 0.2em;
-}
-
-.moment-card__placeholder-icon {
-  display: grid;
-  width: 60px;
-  aspect-ratio: 1;
-  place-items: center;
-  border: 1px solid rgb(255 255 255 / 38%);
-  border-radius: 50%;
-  background: rgb(255 255 255 / 12%);
-  color: #fff0f6;
-  font-size: 26px;
-  -webkit-backdrop-filter: blur(5px);
-  backdrop-filter: blur(5px);
+  padding: 8px;
+  border-radius: inherit;
+  object-fit: contain;
 }
 
 .moment-card__type {
@@ -474,6 +535,7 @@ a {
   font-size: 14px;
   -webkit-backdrop-filter: blur(8px);
   backdrop-filter: blur(8px);
+  pointer-events: none;
 }
 
 .moment-card__copy {
@@ -641,7 +703,10 @@ a {
 
 .moment-dialog__panel {
   position: relative;
-  width: min(100%, 720px);
+  display: flex;
+  width: min(100%, 900px);
+  max-height: calc(100dvh - 44px);
+  flex-direction: column;
   overflow: hidden;
   border: 1px solid rgb(255 235 244 / 17%);
   border-radius: 20px;
@@ -671,9 +736,10 @@ a {
 
 .moment-dialog__media {
   display: grid;
-  min-height: 260px;
-  max-height: min(62vh, 550px);
-  aspect-ratio: 16 / 10;
+  width: 100%;
+  height: min(65vh, 680px);
+  min-height: 0;
+  flex: 1 1 auto;
   overflow: hidden;
   place-items: center;
   background:
@@ -684,8 +750,13 @@ a {
 
 .moment-dialog__media img,
 .moment-dialog__media video {
+  display: block;
   width: 100%;
   height: 100%;
+  min-width: 0;
+  min-height: 0;
+  max-width: 100%;
+  max-height: 100%;
   object-fit: contain;
 }
 
@@ -726,7 +797,27 @@ a {
 }
 
 .moment-dialog__caption {
+  flex: 0 0 auto;
   padding: 19px 22px 22px;
+}
+
+.moment-dialog__panel:fullscreen {
+  width: 100vw;
+  width: 100dvw;
+  max-width: none;
+  height: 100vh;
+  height: 100dvh;
+  max-height: none;
+  border: 0;
+  border-radius: 0;
+  background: #1b121c;
+}
+
+.moment-dialog__panel:fullscreen .moment-dialog__media {
+  width: 100%;
+  height: auto;
+  max-height: none;
+  flex: 1 1 auto;
 }
 
 .moment-dialog__eyebrow {
@@ -829,10 +920,6 @@ a {
     margin-top: 0;
   }
 
-  .hero-heart {
-    width: 50%;
-  }
-
   .page-section {
     padding: 31px 0;
   }
@@ -851,19 +938,8 @@ a {
   }
 
   .moment-card__art {
-    aspect-ratio: 0.92;
+    aspect-ratio: 4 / 3;
     border-radius: 9px;
-  }
-
-  .moment-card__placeholder {
-    gap: 9px;
-    font-size: 6px;
-    letter-spacing: 0.13em;
-  }
-
-  .moment-card__placeholder-icon {
-    width: 45px;
-    font-size: 20px;
   }
 
   .moment-card__type {
@@ -906,8 +982,10 @@ a {
   }
 
   .moment-dialog__media {
-    min-height: 220px;
-    aspect-ratio: 4 / 3;
+    width: 100%;
+    height: min(58dvh, 520px);
+    min-height: 180px;
+    flex: 0 1 auto;
   }
 }
 

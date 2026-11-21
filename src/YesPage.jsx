@@ -1,69 +1,206 @@
-import { useEffect, useRef, useState } from "react";
+import { forwardRef, useEffect, useRef, useState } from "react";
 import { AnimatePresence, m, useReducedMotion } from "framer-motion";
 
-// Put media files in public/media and use paths such as /media/photo.jpg.
+const MEDIA_PATH = "/media";
+
 const MOMENTS = [
   {
-    id: "photo-one",
+    id: "night-out",
     kind: "photo",
     label: "Photo",
-    title: "Our favorite little moment",
-    note: "Add a photo and a little note about it.",
-    src: "",
-    poster: "",
-    alt: "",
+    title: "A little night out",
+    note: "Just us, out in the world.",
+    src: `${MEDIA_PATH}/PHOTO-2026-11-21-07-27-02.jpg`,
+    alt: "Two people sharing a quiet moment together outdoors at night.",
   },
   {
-    id: "video-one",
+    id: "portrait-day",
+    kind: "photo",
+    label: "Photo",
+    title: "Looking sharp",
+    note: "One of those photos that makes you smile.",
+    src: `${MEDIA_PATH}/PHOTO-2026-11-21-07-27-04.jpg`,
+    alt: "A person dressed in a vest and tie, standing outside.",
+  },
+  {
+    id: "video-night",
     kind: "video",
     label: "Video",
     title: "A day worth replaying",
-    note: "Add a video and a memory to go with it.",
-    src: "",
-    poster: "",
-    alt: "",
+    note: "Press play and relive the moment.",
+    src: `${MEDIA_PATH}/VIDEO-2026-11-21-07-27-31.mp4`,
+    poster: `${MEDIA_PATH}/PHOTO-2026-11-21-07-27-34.jpg`,
+    alt: "A close-up selfie of two people together.",
   },
   {
-    id: "photo-two",
+    id: "close-up",
     kind: "photo",
     label: "Photo",
-    title: "A place that feels like us",
-    note: "Add a photo and a little note about it.",
-    src: "",
-    poster: "",
-    alt: "",
+    title: "The little details",
+    note: "Even the small things are worth keeping.",
+    src: `${MEDIA_PATH}/PHOTO-2026-11-21-07-27-33.jpg`,
+    alt: "A close-up photograph of a person's lower torso.",
   },
   {
-    id: "video-two",
+    id: "video-selfie",
     kind: "video",
     label: "Video",
     title: "The moment we couldn't stop laughing",
-    note: "Add a video and a memory to go with it.",
-    src: "",
-    poster: "",
-    alt: "",
+    note: "A tiny clip from our camera roll.",
+    src: `${MEDIA_PATH}/VIDEO-2026-11-21-07-27-33.mp4`,
+    poster: `${MEDIA_PATH}/PHOTO-2026-11-21-07-27-37.jpg`,
+    alt: "Two people smiling together in a selfie.",
   },
   {
-    id: "photo-three",
+    id: "soft-selfie",
     kind: "photo",
     label: "Photo",
-    title: "One for the scrapbook",
-    note: "Add a photo and a little note about it.",
-    src: "",
-    poster: "",
-    alt: "",
+    title: "A face I love",
+    note: "A close-up, because why not?",
+    src: `${MEDIA_PATH}/PHOTO-2026-11-21-07-27-34.jpg`,
+    alt: "A close-up selfie of two people looking at the camera.",
   },
   {
-    id: "video-three",
+    id: "headwrap-selfie",
+    kind: "photo",
+    label: "Photo",
+    title: "A cozy little selfie",
+    note: "Caught in a quiet moment.",
+    src: `${MEDIA_PATH}/PHOTO-2026-11-21-07-27-35.jpg`,
+    alt: "A person wearing a dark head wrap and hoodie, taking a selfie.",
+  },
+  {
+    id: "heart-hands",
+    kind: "photo",
+    label: "Photo",
+    title: "Made with our hands",
+    note: "A tiny heart, from the two of us.",
+    src: `${MEDIA_PATH}/PHOTO-2026-11-21-07-27-36.jpg`,
+    alt: "Two people making a heart shape with their hands.",
+  },
+  {
+    id: "cheek-kiss",
+    kind: "photo",
+    label: "Photo",
+    title: "A kiss for the camera",
+    note: "One of my favorite kinds of pictures.",
+    src: `${MEDIA_PATH}/PHOTO-2026-11-21-07-27-37.jpg`,
+    alt: "One person kissing their partner on the cheek outdoors.",
+  },
+  {
+    id: "playful-couple",
+    kind: "photo",
+    label: "Photo",
+    title: "The silly ones are the best",
+    note: "A little bit of chaos, a lot of love.",
+    src: `${MEDIA_PATH}/PHOTO-2026-11-21-07-27-38.jpg`,
+    alt: "A couple making playful expressions in a selfie.",
+  },
+  {
+    id: "peace-sign",
+    kind: "photo",
+    label: "Photo",
+    title: "Too cute not to save",
+    note: "A quick pose and a bright smile.",
+    src: `${MEDIA_PATH}/PHOTO-2026-11-21-07-27-39.jpg`,
+    alt: "A person with braids smiling and making peace signs.",
+  },
+  {
+    id: "sunny-selfie",
+    kind: "photo",
+    label: "Photo",
+    title: "A sunny little hello",
+    note: "A smile that brightens the whole page.",
+    src: `${MEDIA_PATH}/PHOTO-2026-11-21-07-27-40.jpg`,
+    alt: "A person smiling for a selfie in warm sunlight.",
+  },
+  {
+    id: "silly-face",
+    kind: "photo",
+    label: "Photo",
+    title: "Never a dull moment",
+    note: "Proof that we never take ourselves too seriously.",
+    src: `${MEDIA_PATH}/PHOTO-2026-11-21-07-27-41.jpg`,
+    alt: "A person posing playfully for a close-up selfie.",
+  },
+  {
+    id: "jersey-pose",
+    kind: "photo",
+    label: "Photo",
+    title: "Game-day energy",
+    note: "Serving looks and team spirit.",
+    src: `${MEDIA_PATH}/PHOTO-2026-11-21-07-27-42.jpg`,
+    alt: "A person posing outdoors in a black and white sports jersey.",
+  },
+  {
+    id: "jersey-smile",
+    kind: "photo",
+    label: "Photo",
+    title: "That smile, though",
+    note: "A favorite outfit and an even better smile.",
+    src: `${MEDIA_PATH}/PHOTO-2026-11-21-07-27-43.jpg`,
+    alt: "A person smiling in a black and white sports jersey.",
+  },
+  {
+    id: "jersey-moment",
+    kind: "photo",
+    label: "Photo",
+    title: "A little main-character moment",
+    note: "Confident, playful, and completely you.",
+    src: `${MEDIA_PATH}/PHOTO-2026-11-21-07-27-45.jpg`,
+    alt: "A person posing playfully outdoors in a sports jersey.",
+  },
+  {
+    id: "video-glam",
     kind: "video",
     label: "Video",
-    title: "Our next little adventure",
-    note: "Add a video and a memory to go with it.",
-    src: "",
-    poster: "",
-    alt: "",
+    title: "A little bit of glam",
+    note: "A favorite moment, saved in motion.",
+    src: `${MEDIA_PATH}/VIDEO-2026-11-21-07-27-57.mp4`,
+    poster: `${MEDIA_PATH}/PHOTO-2026-11-21-07-27-57.jpg`,
+    alt: "A dressed-up portrait with a burgundy head wrap.",
+  },
+  {
+    id: "burgundy-glow",
+    kind: "photo",
+    label: "Photo",
+    title: "All dressed up",
+    note: "A whole moment in burgundy and sparkle.",
+    src: `${MEDIA_PATH}/PHOTO-2026-11-21-07-27-57.jpg`,
+    alt: "A person wearing a burgundy head wrap and a sparkling necklace.",
+  },
+  {
+    id: "video-day-out",
+    kind: "video",
+    label: "Video",
+    title: "A little day-out clip",
+    note: "Tap to watch this memory.",
+    src: `${MEDIA_PATH}/VIDEO-2026-11-21-07-27-58.mp4`,
+    poster: `${MEDIA_PATH}/PHOTO-2026-11-21-07-27-42.jpg`,
+    alt: "A person posing in a sports jersey outside.",
+  },
+  {
+    id: "video-laugh",
+    kind: "video",
+    label: "Video",
+    title: "One for the camera roll",
+    note: "A small moment, kept close.",
+    src: `${MEDIA_PATH}/VIDEO-2026-11-21-07-27-59.mp4`,
+    poster: `${MEDIA_PATH}/PHOTO-2026-11-21-07-27-43.jpg`,
+    alt: "A smiling portrait in a sports jersey.",
+  },
+  {
+    id: "glasses",
+    kind: "photo",
+    label: "Photo",
+    title: "A candid kind of lovely",
+    note: "The everyday moments make the best memories.",
+    src: `${MEDIA_PATH}/PHOTO-2026-11-21-07-27-60.jpg`,
+    alt: "A person wearing glasses, captured in a candid indoor portrait.",
   },
 ];
+
+const HERO_PHOTOS = MOMENTS.filter((moment) => moment.kind === "photo");
 
 // Audio paths such as /media/song.mp3 enable the native player automatically.
 const AUDIO_TRACKS = [
@@ -100,39 +237,117 @@ const GRID_VARIANTS = {
 
 const WAVEFORM_HEIGHTS = [28, 48, 36, 68, 42, 84, 55, 74, 34, 62, 44, 80, 38, 58, 30, 70, 46, 60, 34, 52, 26, 64, 42, 76];
 
-function MomentCard({ moment, onOpen }) {
+function HeroPhotoStack({ reduceMotion }) {
+  const [activeIndex, setActiveIndex] = useState(0);
+  const [isShowingInterlude, setIsShowingInterlude] = useState(false);
+
+  useEffect(() => {
+    if (reduceMotion || HERO_PHOTOS.length < 2) return undefined;
+
+    const nextPhoto = HERO_PHOTOS[(activeIndex + 1) % HERO_PHOTOS.length];
+    const preload = new Image();
+    let advanceTimeoutId;
+    let interludeTimeoutId;
+    let cancelled = false;
+    let scheduled = false;
+
+    const scheduleAdvance = () => {
+      if (cancelled || scheduled) return;
+      scheduled = true;
+      advanceTimeoutId = window.setTimeout(() => {
+        setIsShowingInterlude(true);
+        interludeTimeoutId = window.setTimeout(() => {
+          setActiveIndex((index) => (index + 1) % HERO_PHOTOS.length);
+          setIsShowingInterlude(false);
+        }, 850);
+      }, 4200);
+    };
+
+    preload.onload = scheduleAdvance;
+    preload.onerror = () => {
+      console.error(`Unable to preload hero slideshow image: ${nextPhoto.src}`);
+    };
+    preload.src = nextPhoto.src;
+
+    if (preload.complete && preload.naturalWidth > 0) {
+      scheduleAdvance();
+    }
+
+    return () => {
+      cancelled = true;
+      window.clearTimeout(advanceTimeoutId);
+      window.clearTimeout(interludeTimeoutId);
+      preload.onload = null;
+      preload.onerror = null;
+    };
+  }, [activeIndex, reduceMotion]);
+
+  const activePhoto = HERO_PHOTOS[activeIndex];
+
+  return (
+    <div className="yes-hero__art" aria-hidden="true">
+      <div className="hero-photo-card hero-photo-card--back-two" />
+      <div className="hero-photo-card hero-photo-card--back-one" />
+      <AnimatePresence initial={false}>
+        <m.div
+          key={activePhoto.id}
+          className="hero-photo-card hero-photo-card--front"
+          initial={reduceMotion ? false : { opacity: 0, y: 12, rotate: 1 }}
+          animate={{ opacity: 1, y: 0, rotate: -2 }}
+          exit={{ opacity: 1, y: -4, rotate: -2 }}
+          transition={{ duration: reduceMotion ? 0.15 : 0.45, ease: [0.22, 1, 0.36, 1] }}
+        >
+          <m.img
+            key={activePhoto.id}
+            src={activePhoto.src}
+            alt=""
+            decoding="async"
+            animate={{ opacity: isShowingInterlude ? 0 : 1 }}
+            transition={{ duration: reduceMotion ? 0.12 : 0.3 }}
+          />
+          <m.div
+            className="hero-photo-card__interlude"
+            animate={{ opacity: isShowingInterlude ? 1 : 0 }}
+            transition={{ duration: reduceMotion ? 0.12 : 0.3 }}
+          >
+            <span>I love you</span>
+            <span aria-hidden="true">♥</span>
+          </m.div>
+          <span className="hero-photo-card__badge">♡&nbsp; our moments</span>
+        </m.div>
+      </AnimatePresence>
+      <span className="hero-photo-stack__sparkle hero-photo-stack__sparkle--one">✦</span>
+      <span className="hero-photo-stack__sparkle hero-photo-stack__sparkle--two">✧</span>
+    </div>
+  );
+}
+
+const MomentCard = forwardRef(function MomentCard({ moment, onOpen }, ref) {
   const isVideo = moment.kind === "video";
   const previewSrc = isVideo ? moment.poster : moment.src;
 
   return (
     <m.button
+      ref={ref}
       type="button"
       className={`moment-card moment-card--${moment.kind}`}
+      layout
       variants={CARD_VARIANTS}
       whileHover={{ y: -8, rotate: isVideo ? 1 : -1, scale: 1.015 }}
       whileTap={{ scale: 0.985 }}
       onClick={() => onOpen(moment)}
-      aria-label={`Open ${moment.label.toLowerCase()} placeholder: ${moment.title}`}
+      aria-label={`Open ${moment.label.toLowerCase()}: ${moment.title}`}
     >
       <span className="moment-card__art">
         <span className="moment-card__orb moment-card__orb--one" />
         <span className="moment-card__orb moment-card__orb--two" />
-        {previewSrc ? (
-          <img
-            className="moment-card__image"
-            src={previewSrc}
-            alt={moment.alt}
-            loading="lazy"
-            decoding="async"
-          />
-        ) : (
-          <span className="moment-card__placeholder" aria-hidden="true">
-            <span className="moment-card__placeholder-icon">
-              {isVideo ? "▶" : "♡"}
-            </span>
-            <span>{isVideo ? "VIDEO PREVIEW" : "PHOTO GOES HERE"}</span>
-          </span>
-        )}
+        <img
+          className="moment-card__image"
+          src={previewSrc}
+          alt={moment.alt}
+          loading="lazy"
+          decoding="async"
+        />
         {isVideo && (
           <span className="moment-card__play" aria-hidden="true">
             <span>▶</span>
@@ -148,7 +363,7 @@ function MomentCard({ moment, onOpen }) {
       </span>
     </m.button>
   );
-}
+});
 
 function AudioCard({ track, index }) {
   return (
@@ -197,7 +412,15 @@ function AudioCard({ track, index }) {
   );
 }
 
-function MomentDialog({ moment, onClose, closeButtonRef }) {
+function MomentDialog({
+  moment,
+  onClose,
+  closeButtonRef,
+  fullscreenRef,
+  isFullscreen,
+  fullscreenError,
+  onToggleFullscreen,
+}) {
   const isVideo = moment.kind === "video";
 
   return (
@@ -210,6 +433,7 @@ function MomentDialog({ moment, onClose, closeButtonRef }) {
       onClick={onClose}
     >
       <m.section
+        ref={fullscreenRef}
         className="moment-dialog__panel"
         role="dialog"
         aria-modal="true"
@@ -220,15 +444,32 @@ function MomentDialog({ moment, onClose, closeButtonRef }) {
         transition={{ type: "spring", stiffness: 280, damping: 26 }}
         onClick={(event) => event.stopPropagation()}
       >
-        <button
-          ref={closeButtonRef}
-          className="moment-dialog__close"
-          type="button"
-          onClick={onClose}
-          aria-label="Close preview"
-        >
-          ×
-        </button>
+        <div className="moment-dialog__toolbar">
+          <button
+            className="moment-dialog__fullscreen"
+            type="button"
+            onClick={onToggleFullscreen}
+            aria-label={isFullscreen ? "Exit full screen" : "View media full screen"}
+            title={isFullscreen ? "Exit full screen" : "View media full screen"}
+          >
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              {isFullscreen ? (
+                <path d="M8 3v5H3M16 3v5h5M8 21v-5H3m13 5v-5h5" />
+              ) : (
+                <path d="M3 8V3h5m8 0h5v5M3 16v5h5m13-5v5h-5" />
+              )}
+            </svg>
+          </button>
+          <button
+            ref={closeButtonRef}
+            className="moment-dialog__close"
+            type="button"
+            onClick={onClose}
+            aria-label="Close preview"
+          >
+            ×
+          </button>
+        </div>
         <div className="moment-dialog__media">
           {moment.src && isVideo ? (
             <video
@@ -236,7 +477,7 @@ function MomentDialog({ moment, onClose, closeButtonRef }) {
               poster={moment.poster || undefined}
               controls
               playsInline
-              preload="metadata"
+              preload="none"
             />
           ) : moment.src ? (
             <img src={moment.src} alt={moment.alt} />
@@ -248,6 +489,11 @@ function MomentDialog({ moment, onClose, closeButtonRef }) {
             </div>
           )}
         </div>
+        {fullscreenError && (
+          <p className="moment-dialog__error" role="status">
+            {fullscreenError}
+          </p>
+        )}
         <div className="moment-dialog__caption">
           <span className="moment-dialog__eyebrow">{moment.label} PREVIEW</span>
           <h2 id="moment-dialog-title">{moment.title}</h2>
@@ -260,8 +506,15 @@ function MomentDialog({ moment, onClose, closeButtonRef }) {
 
 function YesPage() {
   const [selectedMoment, setSelectedMoment] = useState(null);
+  const [activeFilter, setActiveFilter] = useState("all");
+  const [isFullscreen, setIsFullscreen] = useState(false);
+  const [fullscreenError, setFullscreenError] = useState("");
   const closeButtonRef = useRef(null);
+  const fullscreenRef = useRef(null);
   const reduceMotion = useReducedMotion();
+  const visibleMoments = MOMENTS.filter(
+    (moment) => activeFilter === "all" || moment.kind === activeFilter,
+  );
 
   useEffect(() => {
     if (!selectedMoment) return undefined;
@@ -269,19 +522,47 @@ function YesPage() {
     const previousFocus = document.activeElement;
     const previousOverflow = document.body.style.overflow;
     const handleKeyDown = (event) => {
-      if (event.key === "Escape") setSelectedMoment(null);
+      if (event.key === "Escape" && !document.fullscreenElement) {
+        setSelectedMoment(null);
+      }
+    };
+    const handleFullscreenChange = () => {
+      setIsFullscreen(document.fullscreenElement === fullscreenRef.current);
+      setFullscreenError("");
     };
 
     document.body.style.overflow = "hidden";
     document.addEventListener("keydown", handleKeyDown);
+    document.addEventListener("fullscreenchange", handleFullscreenChange);
     closeButtonRef.current?.focus();
 
     return () => {
       document.body.style.overflow = previousOverflow;
       document.removeEventListener("keydown", handleKeyDown);
+      document.removeEventListener("fullscreenchange", handleFullscreenChange);
       if (previousFocus instanceof HTMLElement) previousFocus.focus();
     };
   }, [selectedMoment]);
+
+  async function toggleFullscreen() {
+    const preview = fullscreenRef.current;
+    if (!preview) return;
+
+    setFullscreenError("");
+
+    try {
+      if (document.fullscreenElement === preview) {
+        await document.exitFullscreen();
+      } else if (preview.requestFullscreen) {
+        await preview.requestFullscreen();
+      } else {
+        setFullscreenError("Full screen isn't supported in this browser.");
+      }
+    } catch (error) {
+      setFullscreenError("Couldn't open full screen. Please try again.");
+      console.error("Unable to toggle the media preview's full-screen mode.", error);
+    }
+  }
 
   return (
     <main className="yes-page">
@@ -326,36 +607,15 @@ function YesPage() {
               of <span>our own.</span>
             </h1>
             <p className="yes-hero__description">
-              A cozy place for the photos, videos, and songs that feel like us.
-              Our favorite memories will go right here.
+              A little scrapbook of our photos, favorite clips, and everything
+              that makes this feel like us.
             </p>
             <a className="hero-scroll-link" href="#moments">
               Explore our moments <span aria-hidden="true">↓</span>
             </a>
           </div>
 
-          <div className="yes-hero__art" aria-hidden="true">
-            <m.div
-              className="hero-orbit hero-orbit--outer"
-              animate={reduceMotion ? undefined : { rotate: 360 }}
-              transition={{ duration: 48, repeat: Infinity, ease: "linear" }}
-            />
-            <m.div
-              className="hero-orbit hero-orbit--inner"
-              animate={reduceMotion ? undefined : { rotate: -360 }}
-              transition={{ duration: 36, repeat: Infinity, ease: "linear" }}
-            />
-            <m.div
-              className="hero-heart"
-              animate={reduceMotion ? undefined : { y: [0, -10, 0], scale: [1, 1.035, 1] }}
-              transition={{ duration: 3.5, repeat: Infinity, ease: "easeInOut" }}
-            >
-              <span>❤️</span>
-            </m.div>
-            <span className="hero-orbit-dot hero-orbit-dot--one">✦</span>
-            <span className="hero-orbit-dot hero-orbit-dot--two">♡</span>
-            <span className="hero-orbit-dot hero-orbit-dot--three">✧</span>
-          </div>
+          <HeroPhotoStack reduceMotion={reduceMotion} />
         </m.header>
 
         <section className="page-section" id="moments" aria-labelledby="moments-title">
@@ -374,24 +634,53 @@ function YesPage() {
               <h2 id="moments-title">Little moments, <span>kept close.</span></h2>
             </div>
             <p className="section-heading__note">
-              Photos and video previews go here. Tap a card to open its full-size moment.
+              Sixteen photos and five little clips, all in one place.
             </p>
           </m.div>
+
+          <div className="moment-filters" role="group" aria-label="Filter memories">
+            {[
+              { id: "all", label: "Everything", count: MOMENTS.length },
+              {
+                id: "photo",
+                label: "Photos",
+                count: MOMENTS.filter((moment) => moment.kind === "photo").length,
+              },
+              {
+                id: "video",
+                label: "Videos",
+                count: MOMENTS.filter((moment) => moment.kind === "video").length,
+              },
+            ].map((filter) => (
+              <button
+                key={filter.id}
+                type="button"
+                className={`moment-filter${activeFilter === filter.id ? " is-active" : ""}`}
+                aria-pressed={activeFilter === filter.id}
+                onClick={() => setActiveFilter(filter.id)}
+              >
+                {filter.label} <span>{filter.count}</span>
+              </button>
+            ))}
+          </div>
 
           <m.div
             className="moment-grid"
             variants={GRID_VARIANTS}
+            layout
             initial="hidden"
             whileInView="visible"
             viewport={{ once: true, amount: 0.12 }}
           >
-            {MOMENTS.map((moment) => (
-              <MomentCard
-                key={moment.id}
-                moment={moment}
-                onOpen={setSelectedMoment}
-              />
-            ))}
+            <AnimatePresence mode="popLayout">
+              {visibleMoments.map((moment) => (
+                <MomentCard
+                  key={moment.id}
+                  moment={moment}
+                  onOpen={setSelectedMoment}
+                />
+              ))}
+            </AnimatePresence>
           </m.div>
         </section>
 
@@ -447,6 +736,10 @@ function YesPage() {
             moment={selectedMoment}
             onClose={() => setSelectedMoment(null)}
             closeButtonRef={closeButtonRef}
+            fullscreenRef={fullscreenRef}
+            isFullscreen={isFullscreen}
+            fullscreenError={fullscreenError}
+            onToggleFullscreen={toggleFullscreen}
           />
         )}
       </AnimatePresence>

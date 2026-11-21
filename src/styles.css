@@ -202,17 +202,206 @@ h1 span {
   backdrop-filter: blur(14px);
 }
 
-.heart-zoom {
+.love-transition {
   position: fixed;
-  z-index: 10;
-  color: #ff477e;
-  font-family: "Apple Color Emoji", "Segoe UI Emoji", sans-serif;
-  font-size: 50px;
-  line-height: 1;
+  z-index: 20;
+  inset: 0;
+  display: grid;
+  overflow: hidden;
+  place-items: center;
+  padding: 28px;
+  isolation: isolate;
+  background:
+    radial-gradient(ellipse at 50% 45%, rgb(111 24 75 / 72%), transparent 48%),
+    linear-gradient(145deg, #180817, #3c0e35 52%, #150817);
+  color: #fff5fb;
+}
+
+.destination-reveal {
+  min-height: 100vh;
+  min-height: 100svh;
+  transform-origin: center;
+  will-change: transform, opacity;
+}
+
+.love-transition__aurora {
+  position: absolute;
+  z-index: -1;
+  inset: 0;
+  overflow: hidden;
   pointer-events: none;
+}
+
+.love-transition__orb {
+  position: absolute;
+  display: block;
+  width: min(72vw, 760px);
+  aspect-ratio: 1;
+  border-radius: 50%;
+  filter: blur(2px);
+  opacity: 0.48;
+  will-change: transform;
+}
+
+.love-transition__orb--one {
+  top: -30%;
+  left: -20%;
+  background: radial-gradient(circle, rgb(255 58 143 / 32%), transparent 68%);
+}
+
+.love-transition__orb--two {
+  right: -24%;
+  bottom: -34%;
+  background: radial-gradient(circle, rgb(113 247 255 / 24%), transparent 69%);
+}
+
+.love-transition__spark {
+  position: absolute;
+  color: rgb(255 226 245 / 78%);
+  font-size: clamp(12px, 2vw, 21px);
+  text-shadow: 0 0 18px rgb(255 136 202 / 90%);
+  will-change: transform, opacity;
+}
+
+.love-transition__content {
+  position: relative;
+  z-index: 1;
+  width: min(100%, 900px);
+  text-align: center;
+  perspective: 700px;
+  will-change: transform, opacity;
+}
+
+.love-transition__eyebrow {
+  margin: 0 0 clamp(20px, 5vh, 42px);
+  color: #ffd7eb;
+  font-size: clamp(9px, 1.6vw, 12px);
+  font-weight: 700;
+  letter-spacing: 0.28em;
+}
+
+.love-transition__message {
+  display: flex;
+  align-items: baseline;
+  justify-content: center;
+  gap: clamp(7px, 1.3vw, 17px);
+  margin: 0;
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: clamp(48px, 10.5vw, 116px);
+  font-weight: 600;
+  letter-spacing: -0.045em;
+  line-height: 1.1;
+  white-space: nowrap;
+}
+
+.love-transition__letter {
+  display: inline-block;
+  transform-origin: 50% 100%;
+  will-change: transform, opacity;
+}
+
+.love-transition__letter--pink {
+  color: #ff8fc8;
+  text-shadow: 0 0 34px rgb(255 90 174 / 58%);
+}
+
+.love-transition__letter--red {
+  color: #ff3158;
+  text-shadow: 0 0 30px rgb(255 29 74 / 48%);
+}
+
+.love-transition__letter--glow {
+  color: #71f7ff;
+  text-shadow: 0 0 30px rgb(68 229 255 / 68%);
+}
+
+.love-transition__status {
+  min-height: 1.6em;
+  margin: 30px 0 0;
+  color: #f3d9ec;
+  font-size: clamp(12px, 2vw, 15px);
+  letter-spacing: 0.06em;
+}
+
+.love-transition__retry {
+  margin-top: 18px;
+  padding: 11px 20px;
+  border: 1px solid rgb(255 214 235 / 42%);
+  border-radius: 999px;
+  background: rgb(255 255 255 / 10%);
+  color: #fff5fb;
+  cursor: pointer;
+  font: inherit;
+}
+
+.love-transition__portal {
+  position: absolute;
+  z-index: 2;
+  top: 50%;
+  left: 50%;
+  display: grid;
+  width: clamp(200px, 40vmin, 380px);
+  aspect-ratio: 1;
+  place-items: center;
+  border: 1px solid rgb(255 255 255 / 86%);
+  border-radius: 50%;
+  background:
+    conic-gradient(from 25deg, #ff3f96, #ff3158, #ffcf70, #71f7ff, #ac6dff, #ff3f96);
+  box-shadow:
+    0 0 36px rgb(255 77 163 / 84%),
+    0 0 110px rgb(126 77 255 / 62%),
+    inset 0 0 42px rgb(255 255 255 / 76%);
   translate: -50% -50%;
   transform-origin: center;
-  will-change: transform;
+  will-change: transform, opacity;
+}
+
+.love-transition__portal::before,
+.love-transition__portal::after {
+  position: absolute;
+  inset: 7%;
+  border: 2px solid rgb(255 255 255 / 76%);
+  border-radius: 50%;
+  content: "";
+}
+
+.love-transition__portal::before {
+  inset: 15%;
+  border-style: dashed;
+  opacity: 0.85;
+}
+
+.love-transition__portal-ring {
+  position: absolute;
+  border: 1px solid rgb(255 255 255 / 78%);
+  border-radius: 50%;
+  box-shadow: 0 0 20px rgb(255 255 255 / 70%);
+}
+
+.love-transition__portal-ring--outer {
+  inset: 23%;
+}
+
+.love-transition__portal-ring--inner {
+  inset: 32%;
+  border-style: dotted;
+}
+
+.love-transition__portal-core {
+  color: white;
+  font-family: "Apple Color Emoji", "Segoe UI Emoji", sans-serif;
+  font-size: clamp(36px, 8vmin, 76px);
+  filter: drop-shadow(0 0 22px rgb(255 255 255 / 92%));
+  animation: portal-heartbeat 0.75s ease-in-out infinite alternate;
+}
+
+@keyframes portal-heartbeat {
+  from {
+    transform: scale(0.82);
+  }
+  to {
+    transform: scale(1.16);
+  }
 }
 
 @media (max-width: 480px) {
@@ -228,6 +417,19 @@ h1 span {
   .tease-popup {
     font-size: 14px;
   }
+
+  .love-transition {
+    padding: 20px;
+  }
+
+  .love-transition__message {
+    gap: 5px;
+    font-size: clamp(40px, 10.5vw, 58px);
+  }
+
+  .love-transition__eyebrow {
+    letter-spacing: 0.18em;
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -235,5 +437,9 @@ h1 span {
   *::before,
   *::after {
     scroll-behavior: auto !important;
+  }
+
+  .love-transition__portal-core {
+    animation: none;
   }
 }
