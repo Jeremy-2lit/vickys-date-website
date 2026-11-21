@@ -1,0 +1,277 @@
+* {
+  box-sizing: border-box;
+}
+
+:root {
+  font-family: Georgia, "Times New Roman", serif;
+  color: #fff;
+  background: #2b071b;
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  min-width: 320px;
+  min-height: 100vh;
+  margin: 0;
+  background: linear-gradient(135deg, #2b071b, #6d193f 48%, #b34b72, #301024);
+}
+
+button {
+  font: inherit;
+}
+
+#root,
+.app-shell {
+  min-height: 100vh;
+  min-height: 100svh;
+}
+
+.app-shell {
+  position: relative;
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+  padding: 28px 20px;
+  isolation: isolate;
+}
+
+.background-hearts {
+  position: fixed;
+  z-index: -1;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.floating-heart {
+  position: absolute;
+  bottom: -50px;
+  color: rgb(255 255 255 / 35%);
+  font-size: 25px;
+  will-change: transform, opacity;
+}
+
+.floating-heart-1 {
+  left: 10%;
+}
+
+.floating-heart-2 {
+  left: 25%;
+}
+
+.floating-heart-3 {
+  left: 40%;
+}
+
+.floating-heart-4 {
+  left: 60%;
+}
+
+.floating-heart-5 {
+  left: 75%;
+}
+
+.floating-heart-6 {
+  left: 85%;
+}
+
+.floating-heart-7 {
+  left: 50%;
+}
+
+.proposal-container {
+  position: relative;
+  z-index: 1;
+  width: min(100%, 500px);
+  padding: 40px 25px;
+  border: 1px solid rgb(255 255 255 / 20%);
+  border-radius: 30px;
+  background: rgb(255 255 255 / 8%);
+  box-shadow: 0 20px 70px rgb(0 0 0 / 30%);
+  text-align: center;
+  -webkit-backdrop-filter: blur(20px);
+  backdrop-filter: blur(20px);
+}
+
+.heart-icon {
+  margin-bottom: 25px;
+  color: #ffb6ce;
+  font-size: 55px;
+  line-height: 1;
+  transform-origin: center;
+}
+
+.small-text {
+  margin: 0 0 25px;
+  color: #ffc4d8;
+  font-size: 11px;
+  letter-spacing: 4px;
+}
+
+h1 {
+  margin: 0 0 20px;
+  font-size: clamp(38px, 9vw, 55px);
+  font-weight: normal;
+  line-height: 1.2;
+}
+
+h1 span {
+  color: #ff9dbd;
+}
+
+.description {
+  margin: 0 0 35px;
+  color: #f8dce7;
+  font-size: 15px;
+  line-height: 1.8;
+}
+
+.button-area {
+  position: relative;
+  width: 100%;
+  height: 100px;
+}
+
+#yesButton {
+  position: absolute;
+  z-index: 2;
+  padding: 14px 36px;
+  border: 1px solid #ffc1d6;
+  border-radius: 50px;
+  background: linear-gradient(135deg, #ff7ba8, #d93676);
+  box-shadow: 0 0 25px rgb(255 105 150 / 50%);
+  color: white;
+  cursor: pointer;
+  font-size: 16px;
+  font-weight: bold;
+  letter-spacing: 2px;
+  white-space: nowrap;
+  translate: -50% -50%;
+  transition: box-shadow 0.3s ease, background 0.5s ease;
+}
+
+#yesButton:hover {
+  box-shadow: 0 0 40px rgb(255 105 150 / 90%);
+}
+
+#yesButton:focus-visible {
+  outline: 3px solid #ffe1eb;
+  outline-offset: 4px;
+}
+
+#yesButton.yes-button {
+  background: linear-gradient(135deg, #ffb6ce, #ff477e);
+  box-shadow: 0 0 50px #ff80aa;
+}
+
+.footer-text {
+  margin: 25px 0 0;
+  color: #eeb9cc;
+  font-size: 12px;
+  letter-spacing: 1px;
+}
+
+.attempt-counter {
+  min-height: 1.4em;
+  margin: 18px 0 0;
+  color: #ffc4d8;
+  font-size: 12px;
+}
+
+.tease-popup {
+  position: fixed;
+  z-index: 5;
+  top: max(20px, env(safe-area-inset-top));
+  left: 50%;
+  width: max-content;
+  max-width: calc(100vw - 32px);
+  padding: 15px 22px;
+  border: 1px solid rgb(255 255 255 / 30%);
+  border-radius: 18px;
+  background: rgb(71 12 43 / 92%);
+  box-shadow: 0 12px 40px rgb(0 0 0 / 25%);
+  color: #fff3f7;
+  font-size: 15px;
+  line-height: 1.5;
+  text-align: center;
+  translate: -50% 0;
+  -webkit-backdrop-filter: blur(14px);
+  backdrop-filter: blur(14px);
+}
+
+.surprise-screen {
+  position: fixed;
+  z-index: 1;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+  padding: 24px;
+  background: linear-gradient(135deg, #2b071b, #8c2454, #d65b89);
+  text-align: center;
+}
+
+.surprise-content {
+  width: min(100%, 700px);
+  padding: 30px;
+}
+
+.surprise-content h1 {
+  margin: 25px 0;
+  font-size: clamp(48px, 12vw, 65px);
+}
+
+.surprise-content p {
+  color: #ffe1eb;
+  font-size: 17px;
+  line-height: 1.8;
+}
+
+.big-heart {
+  font-size: 90px;
+  line-height: 1;
+}
+
+.surprise-footer {
+  margin-top: 35px;
+  font-size: 13px !important;
+}
+
+.heart-zoom {
+  position: fixed;
+  z-index: 10;
+  color: #ff477e;
+  font-family: "Apple Color Emoji", "Segoe UI Emoji", sans-serif;
+  font-size: 50px;
+  line-height: 1;
+  pointer-events: none;
+  translate: -50% -50%;
+  transform-origin: center;
+  will-change: transform;
+}
+
+@media (max-width: 480px) {
+  .proposal-container {
+    padding: 35px 20px;
+  }
+
+  .small-text {
+    font-size: 9px;
+    letter-spacing: 3px;
+  }
+
+  .tease-popup {
+    font-size: 14px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    scroll-behavior: auto !important;
+  }
+}
